@@ -1,0 +1,9 @@
+
+**/input.txt
+**/solution_notebook.ipynb
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
