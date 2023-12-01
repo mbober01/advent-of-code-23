@@ -6,14 +6,9 @@ with open("input.txt") as f:
     for line in lines:
         calibration_values = [character for character in line if character.isnumeric()]
 
-        if len(calibration_values) < 2:
-            calibration_value = int(calibration_values[0] * 2)
-
-        else:
-            first_digit = calibration_values[0]
-            last_digit = calibration_values[-1]
-            calibration_value = int(first_digit + last_digit)
-
+        first_digit = calibration_values[0]
+        last_digit = calibration_values[-1]
+        calibration_value = int(first_digit + last_digit)
 
         calibration_sum += calibration_value
 

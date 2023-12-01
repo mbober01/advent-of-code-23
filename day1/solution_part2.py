@@ -35,13 +35,9 @@ with open("input.txt") as f:
 
         calibration_values = [str(value) for key, value in sorted(calibration_values.items(), key=lambda x: x[0])]
 
-        if len(calibration_values) < 2:
-            calibration_value = int(calibration_values[0] * 2)
-
-        else:
-            first_digit = calibration_values[0]
-            last_digit = calibration_values[-1]
-            calibration_value = int(first_digit + last_digit)
+        first_digit = calibration_values[0]
+        last_digit = calibration_values[-1]
+        calibration_value = int(first_digit + last_digit)
 
         calibration_sum += calibration_value
 
