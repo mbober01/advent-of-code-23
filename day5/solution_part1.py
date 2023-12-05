@@ -15,7 +15,6 @@ class Almanac:
     def get_seeds(self):
         self.seeds = [Seed(int(val)) for val in self.instructions[0].split(":")[1].split(" ")[1:]]
 
-
     def get_maps(self):
         mapper = Mapper()
 
