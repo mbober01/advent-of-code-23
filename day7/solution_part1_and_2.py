@@ -17,16 +17,32 @@ class TypeStrength(Enum):
     HIGH_CARD = 1
 
 
-class HandStrength:
-    card_mapping = {
-        "A": 13,
-        "K": 12,
-        "Q": 11,
-        "J": 1,
-        "T": 10,
-    }
+# comment out one of the following mapping for corresponding part
+# also edit part2 parameter in Hand.hand_strength function call to match the part
 
-    def __init__(self, hand_type: TypeStrength, cards):
+# part 1
+# card_mapping = {
+#     "A": 14,
+#     "K": 13,
+#     "Q": 12,
+#     "J": 11,
+#     "T": 10,
+# }
+
+# part2
+card_mapping = {
+    "A": 13,
+    "K": 12,
+    "Q": 11,
+    "J": 1,
+    "T": 10,
+
+}
+
+
+class HandStrength:
+    def __init__(self, hand_type: TypeStrength, cards, part2=True):
+
         self.type_strength: int = hand_type.value
         self.cards_strength: List[int] = self.get_cards_strength(cards)
 
@@ -34,7 +50,7 @@ class HandStrength:
         return f"HandStrength({self.type_strength}, {self.cards_strength})"
 
     def get_cards_strength(self, cards):
-        return [self.card_mapping[card] if card in self.card_mapping.keys() else int(card) for card in cards]
+        return [card_mapping[card] if card in card_mapping.keys() else int(card) for card in cards]
 
     def __eq__(self, other: HandStrength):
         return (self.type_strength == other.type_strength
@@ -55,7 +71,7 @@ class Hand:
     def __init__(self, cards, bid):
         self.cards = cards
         self.bid = bid
-        self.hand_strength: HandStrength = self.get_hand_strength()
+        self.hand_strength: HandStrength = self.get_hand_strength(part2=True)
 
     def __repr__(self):
         return f"Hand({self.cards}, {self.bid}, {self.hand_strength})"
@@ -78,13 +94,14 @@ class Hand:
 
         return most_common_card
 
-    def get_hand_strength(self):
+    def get_hand_strength(self, part2=True):
         card_count = Counter(self.cards)
 
         joker_count = card_count["J"]
         most_common_card = self.find_most_common_card(card_count)
-        card_count[most_common_card] += joker_count
-        card_count.pop("J", None)
+        if part2:
+            card_count[most_common_card] += joker_count
+            card_count.pop("J", None)
 
         if len(card_count) == 1 or len(card_count) == 0:
             hand_type = TypeStrength.FIVE_OF_A_KIND
@@ -103,7 +120,7 @@ class Hand:
         else:
             hand_type = TypeStrength.HIGH_CARD
 
-        return HandStrength(hand_type, self.cards)
+        return HandStrength(hand_type, self.cards, part2)
 
 
 class AllHands:
@@ -126,7 +143,6 @@ def main():
     all_hands.hands.sort()
 
     print(all_hands.winnings())
-
 
 
 if __name__ == "__main__":
