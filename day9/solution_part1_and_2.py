@@ -10,6 +10,7 @@ class Report:
 class History:
     def __init__(self, history):
         self.current_sequence = history
+        self.first_values = []
         self.last_values = []
         self.analyzer = Analyzer()
 
@@ -17,6 +18,7 @@ class History:
         return f'History({self.current_sequence})'
 
     def go_to_next(self):
+        self.first_values.append(self.current_sequence[0])
         self.last_values.append(self.current_sequence[-1])
         self.current_sequence = self.analyzer.get_new_sequence(self.current_sequence)
 
@@ -48,17 +50,29 @@ class Analyzer:
 
         return predicted_value
 
+    @staticmethod
+    def predict_next_value2(first_values):
+        predicted_value = first_values[-1]
+        for number in reversed(first_values[:-1]):
+            predicted_value = number - predicted_value
 
-def main():
+        return predicted_value
+
+
+def main(part2=True):
     report = Report('input.txt')
     sum_of_predicted_values = 0
     for history in report.histories:
         history.go_max_depth()
+        if part2:
+            predicted_value = history.analyzer.predict_next_value2(history.first_values)
+        else:
+            predicted_value = history.analyzer.predict_next_value(history.last_values)
 
-        sum_of_predicted_values += history.analyzer.predict_next_value(history.last_values)
+        sum_of_predicted_values += predicted_value
 
     print(sum_of_predicted_values)
 
 
 if __name__ == '__main__':
-    main()
+    main(part2=True)
